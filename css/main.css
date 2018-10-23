@@ -49,3 +49,20 @@ body {
 header {
     margin-bottom: 30px;
 }
+
+button {
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #000;
+}
+
+input.searchbox {
+    color: #000;
+}
+
+.search-results {
+    border: 1px solid #fff;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: none;
+}

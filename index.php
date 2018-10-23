@@ -20,13 +20,13 @@
         <?php include_once('api.php'); ?>
     </head>
 
-<?php
-$api = new PHP_API();
-$basic = $api->get();
-$planets = $api->get('planets');
-$planet_1 = $api->get('planets/1');
-$search = $api->get('people', array('search' => 2));    
-?>
+    <?php
+    $api = new PHP_API();
+    $basic = $api->get();
+    $planets = $api->get('planets');
+    $planet_1 = $api->get('planets/1');
+    $search = $api->get('people', array('search' => 2));    
+    ?>
 
     <body>
         <!--[if lte IE 9]>
@@ -34,10 +34,33 @@ $search = $api->get('people', array('search' => 2));
         <![endif]-->
     
         <header>
-    
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>SWAPI</h1>
+                    </div>
+                </div>        
+            </div>
         </header>
     
-        <div class="container">
+        <div class="content container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="search-form">
+                        <h3>Search People</h3>
+                        <input type="text" name="search" id="search" class="searchbox" />
+                        <button class="button" id="search-btn">Search</button>    
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="search-results">  
+                    </div>
+                </div>
+            </div>            
+            
             <div class="row">
                 <div class="col-12">
                     <h2>SWAPI</h2>
