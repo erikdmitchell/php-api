@@ -9,10 +9,8 @@ $('#search-btn').on('click', function() {
         url: 'ajax.php',
         data: data,
         type: 'post',
-        success: function(response) {
-            console.log(response);
-            
-            $('.search-results').show();
+        success: function(html) {
+            $('.search-results').html(html).show();
         }
     });
 });

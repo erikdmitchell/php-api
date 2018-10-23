@@ -24,8 +24,7 @@
     $api = new PHP_API();
     $basic = $api->get();
     $planets = $api->get('planets');
-    $planet_1 = $api->get('planets/1');
-    $search = $api->get('people', array('search' => 2));    
+    $planet_1 = $api->get('planets/1');  
     ?>
 
     <body>
@@ -48,7 +47,7 @@
                 <div class="col-12">
                     <div class="search-form">
                         <h3>Search People</h3>
-                        <input type="text" name="search" id="search" class="searchbox" />
+                        <input type="text" name="search" id="search" class="searchbox" value="r2" />
                         <button class="button" id="search-btn">Search</button>    
                     </div>
                 </div>
@@ -90,15 +89,7 @@
                         <?php print_r($planet_1); ?>
                     </pre> 
                 </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-12">
-                    <pre>
-                        <?php print_r($search); ?>
-                    </pre> 
-                </div>
-            </div>                        
+            </div>                       
         </div>
     
         <footer>

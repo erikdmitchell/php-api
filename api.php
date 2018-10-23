@@ -115,6 +115,10 @@ class PHP_API {
         }
         
         return $headers;
+    }
+    
+    public function strip_url($url = '') {
+        return str_replace($this->url, '', $url);
     }    
     
 }
