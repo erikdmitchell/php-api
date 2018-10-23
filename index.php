@@ -1,143 +1,88 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <link rel="manifest" href="site.webmanifest">
+        <link rel="apple-touch-icon" href="icon.png">
+        <!-- Place favicon.ico in the root directory -->
+        
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        
+        <?php include_once('api.php'); ?>
+    </head>
+
 <?php
-/**
- *
- */
-
-
-class PHP_API {
-    
-    protected $url = '';
-    
-    private $token = ''; // not used yet.
-    
-    private $last_response_raw = null;
-    private $last_response = null;
-    
-    public function __construct() {
-        $this->url = 'https://swapi.co/api/'; 
-    }
-    
-    public function get($path = '', $params = array()) {
-        return $this->request('GET', $path, $params);    
-    }
-    
-    private function request($method, $path, $query = array(), $data = null) {
-        $curl = $this->init_curl($method, $path, $query);
-        
-        $bodyLength = 0;
-        
-/*
-        if ($data !== null) {
-            $bodyEncoded = json_encode($data);
-            $bodyLength = strlen($bodyEncoded);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $bodyEncoded);
-        }
-*/
-
-        $headers = $this->get_curl_headers($bodyLength, 'application/json');
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        
-        return $this->execute($curl);       
-    }
-    
-    private function init_curl($method, $path, $query) {
-        $curl = curl_init($this->get_url($path, $query));
-        
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 20);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        
-        
-        return $curl;              
-    }
-    
-    private function get_url($path, $query) {
-        $url = $this->url . ltrim($path, '/');
-        
-        if ($query) {
-            $url .= '?' . http_build_query($query);
-        }
-        
-        return $url;        
-    }
-    
-    private function execute($curl) {
-        $this->last_response_raw = null;
-        $this->last_response = null;
-        
-        $responseRaw = curl_exec($curl);
-        $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $errorNumber = curl_errno($curl);
-        $error = curl_error($curl);
-        
-        curl_close($curl);
-        
-        if ($errorNumber) {
-            // throw exception.
-        }
-        
-        $response = json_decode($responseRaw, true);
-        
-        if ($responseCode >= 400 || !empty($response['error'])) {
-            // error.
-/*
-            $error = [];
-            if (is_array($response)) {
-                $response += ['error' => []];
-                $error = $response['error'];
-            }
-            $error += [
-                'type' => 'Unknown type',
-                'message' => 'Unknown message',
-            ];
-            throw new BreezyApiException($error['type'] . ': ' . $error['message'], $responseCode);
-*/
-        }
-        
-        $this->last_response = $response;
-        $this->last_response_raw = $responseRaw;
-        
-        return $response;
-    }
-    
-    private function get_curl_headers($contentLength, $contentType) {
-        $headers = [
-            'Content-Type: ' . $contentType,
-            'Content-Length: ' . $contentLength,
-        ];
-        
-        if ($this->token) {
-            $headers[] = 'Authorization: ' . $this->token;
-        }
-        
-        return $headers;
-    }    
-    
-}
-
 $api = new PHP_API();
-
-
 $basic = $api->get();
 $planets = $api->get('planets');
 $planet_1 = $api->get('planets/1');
-$search = $api->get('people', array('search' => 2));
+$search = $api->get('people', array('search' => 2));    
+?>
 
-// https://swapi.co/api/planets/
-// https://swapi.co/api/planets/1/
-// https://swapi.co/api/people/?search=r2
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+    
+        <header>
+    
+        </header>
+    
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>SWAPI</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <pre>
+                        <?php print_r($basic); ?>
+                    </pre> 
+                </div>
+            </div>
 
-echo '<pre>';
-echo 'basic<br>';
-print_r($basic);
-echo 'planets<br>';
-print_r($planets);
-echo 'planet 1<br>';
-print_r($planet_1);
-echo 'search<br>';
-print_r($search);
-echo '</pre>';
+            <div class="panets">
+                <?php foreach ($planets['results'] as $planet) : ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <?php echo $planet['name']; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>                
+            
+            <div class="row">
+                <div class="col-12">
+                    <pre>
+                        <?php print_r($planet_1); ?>
+                    </pre> 
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <pre>
+                        <?php print_r($search); ?>
+                    </pre> 
+                </div>
+            </div>                        
+        </div>
+    
+        <footer>
+            <script src="js/jquery-3.3.1.min.js"></script>
+            <script src="js/main.js"></script> 
+        </footer>
+    
+    </body>
+
+</html>
